@@ -7,15 +7,12 @@ Usage
 The most simple form would be to start the application like so (however this is
 not the recommended way - see below):
 
-	$ slappasswd -s xxxxxxxX
-	{SSHA}miChPTqEmOhD3u7H5Bz1HFgtwTys2Qio
-
-    $ docker run -d -p 389:389 -e SLAPD_PASSWORD="{SSHA}miChPTqEmOhD3u7H5Bz1HFgtwTys2Qio" -e SLAPD_BASE_DN="dc=example,dc=net" liut/openldap
+    $ docker run -d -p 389:389 -e SLAPD_PASSWORD="mypassword" -e SLAPD_DOMAIN="dc=example,dc=net" lcgc/openldap
 
 To get the full potential this image offers, one should first create a data-only
 container (see "Data persistence" below), start the OpenLDAP daemon as follows:
 
-    docker run -d -name openldap --volumes-from your-data-container liut/openldap
+    docker run -d -name openldap --volumes-from your-data-container lcgc/openldap
 
 An application talking to OpenLDAP should then `--link` the container:
 
@@ -35,9 +32,10 @@ sets the password for the `admin` user.
 
 The second
 
-    SLAPD_BASE_DN
+    SLAPD_DOMAIN
 
-sets the Base DN parts.
+sets the DC (Domain component) parts. E.g. if one sets it to `ldap.example.org`,
+the generated base DC parts would be `...,dc=ldap,dc=example,dc=org`.
 
 
 Data persistence
